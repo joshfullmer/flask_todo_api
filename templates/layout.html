@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title></title>
+  <link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+  <!-- 
+  ===============================
+  CHANGE
+  Added /static to link href 
+  ===============================
+  -->
+  <link rel="stylesheet" href="/static/styles/main.css" type="text/css">
+</head>
+{% block header %}
+{% if not current_user.is_authenticated %}
+  <nav class="header">
+    <a href="{{ url_for('signup') }}" class="left-spacer">Sign Up</a>
+    <a href="{{ url_for('login') }}" class="right-spacer">Login</a>
+  </nav>
+{% endif %}
+{% if current_user.is_authenticated %}
+  <nav class="header"><a href="{{ url_for('logout') }}">Log out</a></nav>
+{% endif %}
+{% endblock %}
+<body ng-app="todoListApp">
+  
+  {% block content %}{% endblock %}
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-resource.min.js"></script>
+  <!-- 
+  ===============================
+  CHANGE
+
+  Added /static to all script src below
+  ===============================
+  -->
+  <script src="/static/scripts/app.js"></script>
+  <script src="/static/scripts/resources/todo.js"></script>
+  <script src="/static/scripts/controllers/main.js"></script>
+  <script src="/static/scripts/controllers/todo.js"></script>
+  <script src="/static/scripts/directives/todo.js"></script>
+</body>
+</html>

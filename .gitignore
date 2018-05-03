@@ -1,0 +1,4 @@
+.coverage
+__pycache__
+todos.sqlite
+.DS_Store

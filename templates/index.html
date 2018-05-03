@@ -2,18 +2,16 @@
 
 {% block content %}
 
-{% if not current_user.is_authenticated %}
-  <h2>This  TODO application will not work correctly if you don't sign in.</h2>
-{% endif %}
 {% if current_user.is_authenticated %}
-  <h1>{{current_user.username}}'s TODOs!</h1>
-
-  
+<h1>{{current_user.username}}'s TODOs!</h1>
 <div class="list" ng-controller="mainCtrl">
     <div class="add">
         <a href="#" ng-click="addTodo()">+ Add a New Task</a>
     </div>
     <todo></todo>
 </div>
+{% endif %}
+{% if not current_user.is_authenticated %}
+  <h1>Please login to manage your tasks.</h1>
 {% endif %}
 {% endblock %}

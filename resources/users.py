@@ -4,6 +4,7 @@ from flask import Blueprint, make_response
 from flask_restful import (Resource, Api, reqparse, fields,
                            marshal)
 
+from auth import auth
 import models
 
 user_fields = {
@@ -34,10 +35,13 @@ class UserList(Resource):
         )
         super().__init__()
 
+    @auth.login_required
     def post(self):
         args = self.reqparse.parse_args()
         if args['password'] == args['verify_password']:
-            user = models.User.create_user(**args)
+            user = models.User.create_user(
+                username=args.get('username'),
+                password=args.get('password'))
             return marshal(user, user_fields), 201
         return make_response(
             json.dumps(

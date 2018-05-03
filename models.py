@@ -1,6 +1,6 @@
 import datetime
 
-import argon2
+from argon2 import PasswordHasher
 from flask_login import UserMixin
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer,
                           BadSignature, SignatureExpired)
@@ -10,7 +10,7 @@ import config
 
 
 DATABASE = pw.SqliteDatabase('todos.sqlite')
-HASHER = argon2.PasswordHasher()
+HASHER = PasswordHasher()
 
 
 class User(UserMixin, pw.Model):

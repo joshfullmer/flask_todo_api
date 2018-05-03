@@ -11,18 +11,27 @@
   -->
   <link rel="stylesheet" href="/static/styles/main.css" type="text/css">
 </head>
-{% block header %}
-{% if not current_user.is_authenticated %}
-  <nav class="header">
-    <a href="{{ url_for('signup') }}" class="left-spacer">Sign Up</a>
-    <a href="{{ url_for('login') }}" class="right-spacer">Login</a>
-  </nav>
-{% endif %}
-{% if current_user.is_authenticated %}
-  <nav class="header"><a href="{{ url_for('logout') }}">Log out</a></nav>
-{% endif %}
-{% endblock %}
 <body ng-app="todoListApp">
+  {% block header %}
+  {% if not current_user.is_authenticated %}
+    <nav class="header">
+      <a href="{{ url_for('signup') }}">Sign Up</a>
+      <a href="{{ url_for('login') }}">Login</a>
+    </nav>
+  {% endif %}
+  {% if current_user.is_authenticated %}
+    <nav><a href="{{ url_for('logout') }}">Log out</a></nav>
+  {% endif %}
+  {% endblock %}
+
+  <!-- Flash messages -->
+  {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="notification {{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
   
   {% block content %}{% endblock %}
 

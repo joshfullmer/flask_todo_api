@@ -2,6 +2,7 @@ from flask import Blueprint, abort
 from flask_restful import (Resource, reqparse, fields, marshal_with, url_for,
                            Api, marshal)
 
+from auth import auth
 import models
 
 
@@ -37,6 +38,7 @@ class Todo(Resource):
         )
         super().__init__()
 
+    @auth.login_required
     @marshal_with(todo_fields)
     def put(self, todo_id):
         todo = get_todo_or_404(todo_id)
@@ -49,6 +51,7 @@ class Todo(Resource):
         return (todo, 200,
                 {'location': url_for('resources.todos.todo', todo_id=todo_id)})
 
+    @auth.login_required
     def delete(self, todo_id):
         todo = get_todo_or_404(todo_id)
         todo.delete_instance()
@@ -77,6 +80,7 @@ class TodoList(Resource):
         todos = [marshal(todo, todo_fields) for todo in models.Todo.select()]
         return (todos, 200)
 
+    @auth.login_required
     @marshal_with(todo_fields)
     def post(self):
         args = self.reqparse.parse_args()

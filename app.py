@@ -1,6 +1,6 @@
 import json
 
-import argon2
+from argon2.exceptions import VerifyMismatchError
 from flask import Flask, g, jsonify, render_template, redirect, url_for, flash
 from flask_login import (current_user, LoginManager, login_required,
                          login_user, logout_user)
@@ -57,12 +57,12 @@ def login():
     if form.validate_on_submit():
         try:
             user = models.User.get(models.User.username == form.username.data)
-        except models.DoesNoteExist:
+        except models.User.DoesNotExist:
             flash('Sign in failed.')
         else:
             try:
                 user.verify_password(form.password.data)
-            except argon2.exceptions.VerifyMismatchError:
+            except VerifyMismatchError:
                 flash('Sign in failed.')
             else:
                 login_user(user)
